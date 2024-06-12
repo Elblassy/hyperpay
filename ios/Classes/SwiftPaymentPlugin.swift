@@ -162,6 +162,7 @@ public class SwiftPaymentPlugin: NSObject,FlutterPlugin ,SFSafariViewControllerD
 
     private func openCustomUI(checkoutId: String,result1: @escaping FlutterResult) {
 
+
         if self.mode == "live" {
             self.provider = OPPPaymentProvider(mode: OPPProviderMode.live)
         }else{
@@ -204,7 +205,7 @@ public class SwiftPaymentPlugin: NSObject,FlutterPlugin ,SFSafariViewControllerD
                         if transaction.type == .asynchronous {
                             self.safariVC = SFSafariViewController(url: self.transaction!.redirectURL!)
                             self.safariVC?.delegate = self;
-                            //    self.present(self.safariVC!, animated: true, completion: nil)
+//                              self.present(self.safariVC!, animated: true, completion: nil)
                             UIApplication.shared.windows.first?.rootViewController?.present(self.safariVC!, animated: true, completion: nil)
                         }
                         else if transaction.type == .synchronous {
@@ -213,7 +214,8 @@ public class SwiftPaymentPlugin: NSObject,FlutterPlugin ,SFSafariViewControllerD
                         }
                         else {
                             // Handle the error
-                            self.createalart(titletext: error as! String, msgtext: "Plesae try again")
+                            self.createalart(titletext: error?.localizedDescription as! String, msgtext: "Plesae try again")
+                            result1(FlutterError.init(code: "1",message:"Error : " + error!.localizedDescription as! String,details: nil))
                         }
                     }
                     // Set shopper result URL
@@ -222,6 +224,7 @@ public class SwiftPaymentPlugin: NSObject,FlutterPlugin ,SFSafariViewControllerD
                 catch let error as NSError {
                     // See error.code (OPPErrorCode) and error.localizedDescription to identify the reason of failure
                     self.createalart(titletext: error.localizedDescription, msgtext: "")
+                    result1(FlutterError.init(code: "1",message:"Error : " + error.localizedDescription as! String,details: nil))
                 }
             }
     }
@@ -243,8 +246,13 @@ public class SwiftPaymentPlugin: NSObject,FlutterPlugin ,SFSafariViewControllerD
                    }
                }
            }
-
        }
+
+    public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+         self.Presult?("Error")
+         self.safariVC = nil
+     }
+
      public func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
            var handler:Bool = false
            if url.scheme?.caseInsensitiveCompare( self.shopperResultURL) == .orderedSame {

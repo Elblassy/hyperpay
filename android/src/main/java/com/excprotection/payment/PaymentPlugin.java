@@ -91,7 +91,7 @@ public class PaymentPlugin  implements
         case "ReadyUI" :
           brandsReadyUi = call.argument("brand");
           setStorePaymentDetailsMode = call.argument("setStorePaymentDetailsMode");
-          openCheckoutUI(checkoutId) ;
+//          openCheckoutUI(checkoutId) ;
         break;
         case "StoredCards" :
           cvv = call.argument("cvv");
@@ -124,48 +124,48 @@ public class PaymentPlugin  implements
 
   }
 
-  private void openCheckoutUI(String checkoutId) {
-
-    Set<String> paymentBrands = new LinkedHashSet<>(brandsReadyUi);
-    // CHECK PAYMENT MODE
-    CheckoutSettings checkoutSettings;
-    if (mode.equals("live")) {
-      //LIVE MODE
-      checkoutSettings = new CheckoutSettings(checkoutId, paymentBrands,
-              Connect.ProviderMode.LIVE);
-    } else {
-      // TEST MODE
-      checkoutSettings = new CheckoutSettings(checkoutId, paymentBrands,
-              Connect.ProviderMode.TEST);
-    }
-
-    // SET LANG
-    checkoutSettings.setLocale(Lang);
-
-    // SHOW TOTAL PAYMENT AMOUNT IN BUTTON
-    // checkoutSettings.setTotalAmountRequired(true);
-
-    //SET SHOPPER
-    checkoutSettings.setShopperResultUrl(ShopperResultUrl + "://result");
-
-    //SAVE PAYMENT CARDS FOR NEXT
-    if (setStorePaymentDetailsMode.equals("true")) {
-      checkoutSettings.setStorePaymentDetailsMode(CheckoutStorePaymentDetailsMode.PROMPT);
-    }
-    //CHANGE THEME
-    checkoutSettings.setThemeResId(R.style.NewCheckoutTheme);
-
-    // CHECKOUT BROADCAST RECEIVER
-    ComponentName componentName = new ComponentName(
-            context.getPackageName(), CheckoutBroadcastReceiver.class.getName());
-
-    // SET UP THE INTENT AND START THE CHECKOUT ACTIVITY
-    Intent intent = checkoutSettings.createCheckoutActivityIntent(context.getApplicationContext(), componentName);
-
-    // START ACTIVITY
-    activity.startActivityForResult(intent, CheckoutActivity.REQUEST_CODE_CHECKOUT);
-
-  }
+//  private void openCheckoutUI(String checkoutId) {
+//
+//    Set<String> paymentBrands = new LinkedHashSet<>(brandsReadyUi);
+//    // CHECK PAYMENT MODE
+//    CheckoutSettings checkoutSettings;
+//    if (mode.equals("live")) {
+//      //LIVE MODE
+//      checkoutSettings = new CheckoutSettings(checkoutId, paymentBrands,
+//              Connect.ProviderMode.LIVE);
+//    } else {
+//      // TEST MODE
+//      checkoutSettings = new CheckoutSettings(checkoutId, paymentBrands,
+//              Connect.ProviderMode.TEST);
+//    }
+//
+//    // SET LANG
+//    checkoutSettings.setLocale(Lang);
+//
+//    // SHOW TOTAL PAYMENT AMOUNT IN BUTTON
+//    // checkoutSettings.setTotalAmountRequired(true);
+//
+//    //SET SHOPPER
+//    checkoutSettings.setShopperResultUrl(ShopperResultUrl + "://result");
+//
+//    //SAVE PAYMENT CARDS FOR NEXT
+//    if (setStorePaymentDetailsMode.equals("true")) {
+//      checkoutSettings.setStorePaymentDetailsMode(CheckoutStorePaymentDetailsMode.PROMPT);
+//    }
+//    //CHANGE THEME
+//    checkoutSettings.setThemeResId(R.style.NewCheckoutTheme);
+//
+//    // CHECKOUT BROADCAST RECEIVER
+//    ComponentName componentName = new ComponentName(
+//            context.getPackageName(), CheckoutBroadcastReceiver.class.getName());
+//
+//    // SET UP THE INTENT AND START THE CHECKOUT ACTIVITY
+//    Intent intent = checkoutSettings.createCheckoutActivityIntent(context.getApplicationContext(), componentName);
+//
+//    // START ACTIVITY
+//    activity.startActivityForResult(intent, CheckoutActivity.REQUEST_CODE_CHECKOUT);
+//
+//  }
 
   private void storedCardPayment(String checkoutId) {
 
